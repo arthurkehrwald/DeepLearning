@@ -1,0 +1,11 @@
+
+Das hier sind ein paar Beispiele für Aufgaben, die Sie mit Python lösen können:
+===============================================================================
+
+Schreiben Sie eine Funktion, die prüft, ob ein Wort ein Palindrom ist.
+
+Schreiben Sie eine Funktion, die für eine Liste von Zahlen den Mittelwert, die Standardabweichung, das Minimum, das Maximum und den Median ausgibt.
+
+Schreiben Sie eine Funktion, die prüft, ob eine eingegebene Zahl eine Primzahl ist.
+
+Schreiben Sie eine Funktion, die die ersten n Zahlen der Fibonacci-Folge ausgibt.
