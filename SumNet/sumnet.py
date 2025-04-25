@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import math
 
 RUNS = 8
-LEARN_RATE = 0.00001
-EPOCHS = 10
-TRAINING_DATA_SIZE = 20
+LEARN_RATE = 0.00015
+EPOCHS = 1
+TRAINING_DATA_SIZE = 50
 
 TrainingExample = namedtuple("TrainingExample", ["a", "b", "sum"])
 TrainingStats = namedtuple("TrainingStats", ["weight_history", "error_history"])
