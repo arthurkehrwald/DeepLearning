@@ -1,0 +1,111 @@
+\documentclass[12pt, a4paper]{report}
+
+% Pakete für deutsche Sprache und Zeichen
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{float}
+
+% Paket für Bilder
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+
+% Paket für Seitenlayout
+\usepackage{geometry}
+\geometry{a4paper, top=25mm, left=30mm, right=20mm, bottom=25mm}
+
+% Paket für Code-Darstellung
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Code-Stil konfigurieren
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    captionpos=b,
+    language=Python
+}
+
+% Nummerierung von Sections deaktivieren
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{2}
+
+% Titelinformationen
+\title{Praktikumsbericht: DLO Deep Learning und Objekterkennung}
+\author{Name}
+\date{\today}
+
+\begin{document}
+
+% Titelblatt
+\begin{titlepage}
+    \begin{center}
+        \vspace*{2cm}
+        \huge
+        \textbf{Praktikumsbericht}\\
+        \vspace{1cm}
+        \LARGE
+        DLO Deep Learning und Objekterkennung\\
+        \vspace{1cm}
+        \large
+        Modul von Prof. Dr. Jan Salmen\\
+        Tutor: Luca Uckermann, Matthias Bullert, Jinxin Eisenhut\\
+        \vspace{2cm}
+        \includegraphics[width=4cm]{TH-Köln-logo-03.png}
+        \vfill
+        \large
+        Arthur Kehrwald\\
+        Matrikelnummer: 11135125\\
+        Datum: \today
+    \end{center}
+\end{titlepage}
+
+% Seitenstil ändern für Seitennummerierung ab 1
+\pagenumbering{gobble}
+
+% Bericht-Inhalte
+\section{Aufgabenstellung}
+
+Thema ist die Klassifzierung von handschriftlichen Ziffern auf Rasterbildern durch ein neuronales Netz anhand des MNIST Datensatzes.
+Aufgabe ist die Beschreibung des Trainingsprozesses mittels Gradientenabstieg anhand der genauen Struktur des Inputs, der Zwischenergebnisse und des Outputs.
+Außerdem soll mit verschiedenen Schichtstrukturen, Fehlerfunktionen, Startgewichten, Epochenanzahlen und Batchgrößen experimentiert werden.
+
+\section{Eingaben, Zwischenergebnisse und Ausgaben}
+
+Der Trainingsdatensatz besteht aus Graustufenbildern jeweils einer handschriftlichen Ziffer mit einer Auflösung von 28$\times$28.
+In der gegebenen Implementierung wird der Datensatz mit der PyTorch utility \texttt{DataLoader} geladen.
+Das Laden in der Funktion \texttt{get\_data} wird durch die Batchgröße parameterisiert.
+Daraus ergibt sich bei einer Batchgröße von 32 für jede Trainingsepoche ein zweidimensionaler Input-Tensor mit 32$\times$784 Elementen.
+Es ist naheliegend, dass die 28$\times$28 Grauwerte jedes der 32 Bilder in einer einzigen Dimension mit 784 Elementen dargestellt wird.\\
+
+Dementsprechend muss die erste Schicht 784 Neuronen haben. In der Beispielimplementierung folgt darauf ein verborgene Schicht mit 50 Neuronen und drei weitere mit jeweils 10 Neuronen weniger, sodass die letze Schicht 10 Neuronen hat.
+Das Netz gibt also für jedes Trainingsbeispiel zehn Werte aus.
+Jeder Wert bezieht sich auf eine der zehn Ziffern und beschreibt, wie sicher sich das Netz ist, dass auf dem Bild die entsprechende Ziffer dargestellt ist.
+
+\section{Experimente}
+
+\subsection{Batchgröße}
+
+Eine Erhöhung der Batchgröße beschleunigt auf meinem System mit CUDA das Training, vermutlich weil die Trainingsdaten weniger oft und in größeren Mengen auf die GPU übertragen werden. Gleichzeitig verlangsamt sich aber auch der Fortschritt pro Epoche.
+
+\subsection{Aktivierungsfunktion}
+
+Ich habe zusätzlich zur voreingestellten Funktion \texttt{Tanh} die Aktivierungsfunktion \texttt{PReLu} und \texttt{Softmax} verwendet. \texttt{PReLu} führt zu keiner deutlichen Veränderung. \texttt{Softmax} verschlechtert das Trainingsergebnis leicht.
+
+\subsection{Fehlerfunktion}
+
+Im Vergleich zur voreingestellten \texttt{CrossEntropyLoss} Funktion führen weder \\\texttt{MultiLabelMarginLoss} noch \texttt{BCELoss} zu einer deutlichen Veränderung.
+
+\subsection{Epochen}
+
+Mehr Epochen führt wie erwartet grundsätzlich zu besseren Trainingsergebnissen. Bei den meisten Testläufen erreichen die Testergebnisse nach ca. 50 Epochen eine Genauigkeit von 97\% und verbessern sich danach kaum noch.
+
+\subsection{Startgewichte}
+
+Die Initialisierung aller Gewichte mit dem Wert 1 macht das Training vollkommen ineffektiv. Eine Initialisierung mit gleichmäßiger anstelle der voreingestellten Normalverteilung führt zu schlechteren Trainingsergebnissen.
+
+\end{document}
