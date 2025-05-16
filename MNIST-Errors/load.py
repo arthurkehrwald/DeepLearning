@@ -22,4 +22,4 @@ for key in state_dict:
     new_state_dict[new_key] = state_dict[key]
 
 model.load_state_dict(new_state_dict)
-torch.save(model, "Davids_MNIST_Model.pt")
+torch.save(model, "Davids_MNIST_Model_3.pt")
